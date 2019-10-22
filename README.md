@@ -31,6 +31,7 @@ Fields:
 
 * Date/Time
 * Patient (Lookup)
+* Description text field
 
 
 ## Page Design
@@ -60,6 +61,19 @@ symptom checker
     * make sure login username unique, prompt if issue creating the patient
     
 ### Navigation Menu Page
-* Buttons to go to symptom checker, appointment viewer, appointment maker
+Buttons or other menu style to navigate to the symptom checker, appointment viewer, appointment maker
+* Allow 
+
+### Symptom Checker
+Patient can choose a selection of symptoms, submit, then see list of possible diagnosis
+* Page interacts with API to find information
+
+### Appointment Viewer
+Shows table or other view both for future appointments and past appointments of the logged in patient
+
+
+### Appointment Maker
+Wizard to create a new appointment tied to the logged in patient
+* check for date conflicts with other appointments
 
 
