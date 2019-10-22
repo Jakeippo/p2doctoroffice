@@ -43,4 +43,23 @@ view appointments
 make appointments
 symptom checker
 
+### Login Page
+* Input field for username and password
+* Login button
+  * On press, looks for matching username+password
+    * can't find username error - prompt no user found
+    * wrong password error - prompt wrong password
+    * success - navigate to logged in user's menu page
+* Registration button
+  * Go to registration page
+  
+### Registration page
+* Input fields to fill in each field for the new patient
+* Create button
+  * On press, creates new patient
+    * make sure login username unique, prompt if issue creating the patient
+    
+### Navigation Menu Page
+* Buttons to go to symptom checker, appointment viewer, appointment maker
+
 
