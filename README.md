@@ -69,7 +69,8 @@ Patient can choose a selection of symptoms, submit, then see list of possible di
 * Page interacts with API to find information
 
 ### Appointment Viewer
-Shows table or other view both for future appointments and past appointments of the logged in patient
+Shows tables, one for future appointments and another past appointments for the logged in patient
+* Columns for date, time, details(?)
 
 
 ### Appointment Maker
