@@ -62,7 +62,7 @@ symptom checker
     
 ### Navigation Menu Page
 Buttons or other menu style to navigate to the symptom checker, appointment viewer, appointment maker
-* Allow 
+* Add a button on the pages below to navigate back to this menu
 
 ### Symptom Checker
 Patient can choose a selection of symptoms, submit, then see list of possible diagnosis
