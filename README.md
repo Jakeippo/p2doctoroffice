@@ -7,10 +7,12 @@ By Jake, Toby, Christian, Cody
 High Priority
 * appointment booking page
 * symptom checker page
+
 Medium Priority
 * user can view upcoming/past appointments
 * Set up a Community
 * Create a Login page
+
 Low Priority
 * Self registration Page
 * use code analysis tool to measure app
