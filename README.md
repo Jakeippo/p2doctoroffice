@@ -17,7 +17,7 @@ Low Priority
 
 ## Custom Objects
 
-Org will use Patient and Appointment Objects to track data required to use pages.
+Org will use Patient and Appointment Objects to track data required for the web pages.
 
 ### Patient
 Fields:
