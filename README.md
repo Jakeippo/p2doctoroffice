@@ -35,3 +35,12 @@ Fields:
 
 ## Page Design
 
+First thing user sees is Login/Registration Pages.
+Can login or register to create a new patient.
+
+Patient then is logged in and can view a menu to go to the next pages:
+view appointments
+make appointments
+symptom checker
+
+
