@@ -27,6 +27,7 @@ Org will use Patient and Appointment Objects to track data required for the web 
 * Contact Information
 * Email
 * Password for login
+* Gender
 
 
 ### Appointment
