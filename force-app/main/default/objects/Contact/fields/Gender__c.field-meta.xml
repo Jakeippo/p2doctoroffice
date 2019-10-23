@@ -4,8 +4,7 @@
     <externalId>false</externalId>
     <label>Gender</label>
     <required>true</required>
-    <trackHistory>false</trackHistory>
-    <trackTrending>false</trackTrending>
+    <trackFeedHistory>false</trackFeedHistory>
     <type>Picklist</type>
     <valueSet>
         <restricted>true</restricted>
