@@ -17,23 +17,37 @@ Low Priority
 * Self registration Page
 * use code analysis tool to measure app
 
+## The Community and Org setup
+Patients are treated as external guest users by the org with a profile limited to the community pages and their information.
+The community site follows a template which allows a choice of tabs and sidebar items which can lead to our custom visualforce pages.
+The log in page and registration is handled automatically, with information for on the patient stored in a contact record.
+Every patient is also automatically associated with an acoount record called "Patients".
+
+
 ## Custom Objects
 
 Org will use Patient and Appointment Objects to track data required for the web pages.
 
-### Patient
-
+### Patients
+The Patient is stored in salesforce using the Contact standard object
+Can access the
 * Name
 * Contact Information
 * Email
-* Password for login
-* Gender
+
+Custom Fields: Add a Gender field to Contacts which will help the symptom checker
+
+### Doctors
+Doctors with certain specialties will be tracked to the allow symptom checker to give doctor suggestions.
+
+Doctors could simply be another type of Contact record with a picklist of specialties
 
 
 ### Appointment
-
+Users can view, create appointments with certain doctors
 * Date/Time
-* Patient (Lookup)
+* Patient (Lookup to Contact)
+* Doctor (Lookup)
 * Description text field
 
 
@@ -47,17 +61,22 @@ Patient then is logged in and can view a menu to go to the next pages:
 * make appointments
 * symptom checker
 
-### Login Page
+### Login Page & Registration Page
+ Handled by the community automatically, but has potential to be customized.
+ 
+ #### Login Page
 * Input field for username and password
 * Login button
   * On press, looks for matching username+password
     * can't find username error - prompt no user found
     * wrong password error - prompt wrong password
     * success - navigate to logged in user's menu page
-* Registration button
+* Registration link
   * Go to registration page
+* Forgot Password link
+  * allows password reset given a username, emails a new pass
   
-### Registration page
+#### Registration page
 * Input fields to fill in each field for the new patient
 * Create button
   * On press, creates new patient
