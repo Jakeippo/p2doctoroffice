@@ -44,7 +44,7 @@ Org will use Patient and Appointment Objects to track data required for the web 
 
 ### Patients
 The Patient is stored in salesforce using the Contact standard object
-Can access the
+
 * Name
 * Contact Information
 * Email
@@ -54,7 +54,7 @@ Custom Fields: Add a Gender field to Contacts which will help the symptom checke
 ### Doctors
 Doctors with certain specialties will be tracked to the allow symptom checker to give doctor suggestions.
 
-Doctors could simply be another type of Contact record with a picklist of specialties
+Doctors could simply be another type of Contact record with a picklist of specialties, location
 
 
 ### Appointment
