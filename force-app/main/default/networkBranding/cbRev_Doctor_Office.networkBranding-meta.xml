@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NetworkBranding xmlns="http://soap.sforce.com/2006/04/metadata">
+    <loginFooterText>salesforce.com</loginFooterText>
+    <loginLogo>Communities_Shared_Document_Folder/serveimage_png.png</loginLogo>
+    <loginLogoName>serveimage.png</loginLogoName>
+    <loginPrimaryColor>#00A000</loginPrimaryColor>
+    <loginQuaternaryColor>#C6ECC6</loginQuaternaryColor>
+    <network>Rev Doctor Office</network>
+    <pageHeader>Communities_Shared_Document_Folder/serveimage_png.png</pageHeader>
+    <primaryColor>#1B9520</primaryColor>
+    <primaryComplementColor>#FFFFFF</primaryComplementColor>
+    <quaternaryColor>#418544</quaternaryColor>
+    <quaternaryComplementColor>#FFFFFF</quaternaryComplementColor>
+    <secondaryColor>#65B068</secondaryColor>
+    <tertiaryColor>#BBDABC</tertiaryColor>
+    <tertiaryComplementColor>#222222</tertiaryComplementColor>
+    <zeronaryColor>#65B068</zeronaryColor>
+    <zeronaryComplementColor>#222222</zeronaryComplementColor>
+</NetworkBranding>

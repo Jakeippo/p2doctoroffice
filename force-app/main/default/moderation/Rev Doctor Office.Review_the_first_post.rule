@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ModerationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <action>Review</action>
+    <active>false</active>
+    <description>Community moderators review the first post or comment from new members</description>
+    <entitiesAndFields>
+        <entityName>FeedItem</entityName>
+    </entitiesAndFields>
+    <entitiesAndFields>
+        <entityName>FeedComment</entityName>
+    </entitiesAndFields>
+    <entitiesAndFields>
+        <entityName>FeedPollChoice</entityName>
+    </entitiesAndFields>
+    <masterLabel>Review the first post or comment made by a new member</masterLabel>
+    <type>Content</type>
+    <userCriteria>Rev Doctor Office.Members_without_contribution</userCriteria>
+    <userMessage>You can&apos;t use %BLOCKED_KEYWORD% or other inappropriate words in this community. Review your content and try again.</userMessage>
+</ModerationRule>
