@@ -4,6 +4,20 @@ By Jake, Toby, Christian, Cody
 
 ## Requirements
 
+Your team is tasked with creating a website which allows the user to enter in illness symptoms they are experiencing, such as cough, headache and etc. They should then be presented with a list of possible conditions. Based on their possible conditions, recommend doctors in the area that treat their symptoms. They should also be able to schedule an appointment with a doctor.
+
+have a MVP to present by Monday 10/28.
+
+Due 11/4, 8:30AM in GitHub
+10-20 minute presentation/demo.
+
+
+
+Set up a GitHub repository with a protected prod branch.
+You should be pushing new features to this branch. Since prod is protected, you'll have to open up PRs for each new feature. A PR should require three approvals before being merged into prod. PRs should ONLY contain commits relevant to the current feature.
+
+You should have a prod org with DevHub enabled. This is the Org that your team will do your presentation with. This should only ever contain a stable build. You'll develop on scratch-orgs.
+
 High Priority
 * appointment booking page
 * symptom checker page
