@@ -1,0 +1,25 @@
+<!-- 
+    Doctor Ids:
+    The Medic: a003k00000TxudpAAB
+    Patient Ids:
+    Cody Beck: 0033k00003DWK42AAH
+-->
+<apex:page controller="Controller1" sidebar="true" showHeader="true" >
+	<apex:form >
+		<apex:pageblock >
+			<apex:pageblockButtons >
+				<apex:commandButton value="click Me 2" action="{!Transfer}" />
+            </apex:pageblockButtons>
+			<apex:pageBlockSection >
+                Select a Doctor
+                <apex:selectList id="chooseDoctor" value="{!doctorId}" size="1">
+                    <apex:selectOption itemValue="a003k00000TxudpAAB" itemLabel="The Medic"/>
+                </apex:selectList>
+                Select a Patient
+                <apex:selectList id="choosePatient" value="{!patientId}" size="1">
+                    <apex:selectOption itemValue="0033k00003DWK42AAH" itemLabel="Cody Beck"/>
+                </apex:selectList>
+			</apex:pageBlockSection>
+		</apex:pageblock>
+	</apex:form>
+</apex:page>
