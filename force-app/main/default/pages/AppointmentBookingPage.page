@@ -1,0 +1,21 @@
+<apex:page standardController="Appointment__c" recordSetVar="appointments"
+extensions="AppointmentExtender">
+<!-- Begin Default Content REMOVE THIS -->
+<h1>Book An Appointment</h1>
+    <apex:pageBlock>
+        <apex:pageBlockTable value = "{!displayedAppointments}" var = "a">
+            <apex:column value = "{!a.Doctor__c}" />
+            <!-- <apex:column value = "{!a.DoctorName__c}" /> -->
+            <apex:column value = "{!a.AppointmentDate__c}" />
+        </apex:pageBlockTable>
+        <apex:form>
+            Select a date/time
+            <apex:inputField value="{!appt.AppointmentDate__c}"/>
+            <apex:commandButton action="{!save}" value="SAVE"/>
+        </apex:form>
+    </apex:pageBlock>
+</apex:page>
+
+
+
+

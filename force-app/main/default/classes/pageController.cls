@@ -5,10 +5,14 @@ public with sharing class pageController {
     public String password {get;set;}
     public String checkUserName {get;set;}
     public String checkPassword {get;set;}
-    //public String errorMessage {get;set;}
     public String retypePassword {get;set;}
-    //List<Contacts> c = [SELECT name FROM Contacts LIMIT 1];
+    public Appointment__c appt {get;set;}
 
+    public pageController(){
+
+        
+
+    }
 
     public Pagereference loginPage(){
         return Page.loginPage;
