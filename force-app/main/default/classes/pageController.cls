@@ -15,7 +15,6 @@ public with sharing class pageController {
             return appt;
         }
         set;
-
     }
     // public pageController(){
     //     doctorId = Id.valueOf(apexpages.currentpage().getparameters().get('Doc'));
