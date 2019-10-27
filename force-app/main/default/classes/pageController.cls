@@ -6,12 +6,30 @@ public with sharing class pageController {
     public String checkUserName {get;set;}
     public String checkPassword {get;set;}
     public String retypePassword {get;set;}
-    public Appointment__c appt {get;set;}
+    private Id doctorId;
+    private Id patientId;
+    public Appointment__c appt{
+        get{
+            appt = [SELECT Doctor__c, AppointmentDate__c FROM Appointment__c LIMIT 1
+            ];
+            return appt;
+        }
+        set;
 
-    public pageController(){
+    }
+    // public pageController(){
+    //     doctorId = Id.valueOf(apexpages.currentpage().getparameters().get('Doc'));
+    //     patientId = Id.valueOf(apexpages.currentpage().getparameters().get('Pat'));
+    //     appt = new Appointment__c(Doctor__c = doctorId, Patient__c = patientId);
+    // }
+    
+    public Pagereference save(){
+        insert appt;
+        return null;
+    }
 
-        
-
+    public Pagereference AppointmentBookingPage(){
+        return Page.AppointmentBookingPage;
     }
 
     public Pagereference loginPage(){

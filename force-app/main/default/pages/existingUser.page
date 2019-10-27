@@ -1,6 +1,13 @@
-<apex:page controller="pageController" extensions="">
+<apex:page controller="pageController" >
     
     <style>
+
+        .userDetail {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+
+
         body {
          font-style:Grotesque Sans;
          background-color: #d3d3d3;
@@ -62,14 +69,13 @@
     
         <!-- sidebar -->
         <div id="sidebar" class="column">
-          <a href="javascript:void(0)" class="close" onclick="closeBtn()">x</a>
-          <a href="#">Home</a>
-          <a href="#">Appointment Booker</a>
-          <a href="#">Symptom Checker</a>
-          <a href="#">Log out</a>
           <apex:form>
-          <apex:commandLink action="{!loginPage}" value="Log Out" /> 
-        </apex:form>
+            <a href="javascript:void(0)" class="close" onclick="closeBtn()">x</a>
+            <apex:commandLink action="{!existingUser}" value= "Home" />
+            <apex:commandLink action="{!AppointmentBookingPage}" value="Appointment Booker" /> 
+            <a href="#">Symptom Checker</a>
+            <apex:commandLink action="{!loginPage}" value="Log Out" /> 
+          </apex:form>
         </div>
     
     
@@ -77,7 +83,6 @@
         <div id="mainSec">
         <!-- Header -->
           <div>
-        
             <div  class="header" style="color: white; text-align:center; font-size: 90px; font-style:Grotesque Sans; 
                                         background-color:black; 
                                         border: 1px solid black; ">
@@ -87,21 +92,22 @@
          
           </div>
         <!-- Body-->
-        <apex:pageBlock>
-            <apex:pageBlockSection title="User Detail" columns="3">
-                <apex:image id="pfp" value="{!$Resource.pfp}"/>
-                <apex:pageBlockTable value="{!name}" var="a">
-                    <apex:column value="{!name}"/>
-                </apex:pageBlockTable>
+        <apex:pageBlock >
+            <apex:pageBlockSection title="User Detail" >
+                <apex:image style="float: left" id="pfp" value="{!$Resource.pfp}"/>
+                <apex:outputText value="Toby Chan" label="Full Name" />
+                <apex:outputText value="22" label="Age" />
+                <apex:outputText value="toby.chan@revature.net" label="Email" />
             </apex:pageBlockSection>
         </apex:pageBlock>
         <!--Upcoming -->
         <apex:pageBlock>
             <apex:pageBlockSection title="Upcoming Appointments" columns="1">
                 <!-- add upcoming appointments -->
-                <!-- <apex:pageBlockTable value="{!name}" var="a">
-                    <apex:column value="{!name}"/>
-                </apex:pageBlockTable> -->
+               <apex:pageBlockTable value="{!appt}" var="a">
+                    <apex:column value="{!a.Doctor__c}"/>
+                    <apex:column value="{!a.AppointmentDate__c}"/>
+                </apex:pageBlockTable>
 
             </apex:pageBlockSection>
         </apex:pageBlock>
