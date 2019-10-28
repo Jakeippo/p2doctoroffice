@@ -1,0 +1,15 @@
+<apex:page controller="SymptomCheckerController">
+    <apex:pageBlock title="Follow up questions">
+        <apex:form>
+            <apex:pageBlockSection title="Follow up question 1">
+                <apex:commandButton value="Yes" />
+                <apex:commandButton value="No" />
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Follow up question 2">
+                <apex:commandButton value="Yes" />
+                <apex:commandButton value="No" />
+            </apex:pageBlockSection>
+            <apex:commandButton value="continue" action="{!goToConditionsPage}"/>
+        </apex:form>
+    </apex:pageBlock>
+</apex:page>

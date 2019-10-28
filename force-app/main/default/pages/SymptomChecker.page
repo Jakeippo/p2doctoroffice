@@ -1,0 +1,44 @@
+<apex:page controller="SymptomCheckerController">
+    <apex:messages />
+    <apex:param name="symptomInput" value="{!symptomInput}" assignTo="{!symptomInput}" />
+    
+    <apex:pageBlock title="Symptom Identification" id="searchResults">
+        <apex:pageBlockButtons >
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection title="Patient Information">
+            <apex:outputField value="{!contact.Id}" />
+            <apex:outputField value="{!contact.Name}" />
+            <apex:outputField value="{!contact.Age__c}" />
+            <apex:outputField value="{!contact.Gender__c}" />
+            
+        </apex:pageBlockSection>
+        <apex:form>
+            <apex:pageBlockSection title="Symptom Information" columns="1">
+                <apex:outputText value="Symptom" />
+                <apex:outputPanel id="inputs">
+                    <apex:inputText value="{!symptomInput}"/>
+                </apex:outputPanel>     
+                <apex:actionRegion>
+                    <apex:commandButton value="Search" >
+                        <apex:actionSupport event="onclick" reRender="searchResults"/>
+                    </apex:commandButton>
+                </apex:actionRegion>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Symptom Search Results" id="searchResults" columns="1">
+                <apex:selectCheckBoxes value="{!selectedSymptoms}" layout="pageDirection">
+                    <apex:selectOptions value="{!results}" />
+                </apex:selectCheckBoxes>
+                <apex:commandButton value="Add symptoms" action="{!addSymptoms}"/> 
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="List of selected symptoms">
+                <apex:pageBlockTable value="{!symptomMap}" var="s">
+                    <apex:column value="{!symptomMap[s]}"></apex:column>
+                </apex:pageBlockTable>
+                <apex:commandButton value="Diagnose" action="{!diagnose}"/>
+            </apex:pageBlockSection>
+        </apex:form>
+        
+        
+    </apex:pageBlock>
+    
+</apex:page>
