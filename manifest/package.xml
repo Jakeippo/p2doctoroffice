@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+	<types>
+		<members>*</members>
+		<name>ContentAsset</name>
+	</types>
+	<types>
+		<members>DrOffice</members>
+		<name>CustomApplication</name>
+	</types>
+	<types>
+		<members>Account</members>
+		<members>Appointment__c</members>
+		<members>Contact</members>
+		<members>Doctor__c</members>
+		<name>CustomObject</name>
+	</types>
+	<types>
+		<members>Appointment__c</members>
+		<members>Doctor__c</members>
+		<name>CustomTab</name>
+	</types>
+	<types>
+		<members>Account-Account Layout</members>
+		<members>Appointment__c-Appointment Layout</members>
+		<members>Contact-Patient Layout</members>
+		<members>Doctor__c-Doctor Layout</members>
+		<name>Layout</name>
+	</types>
+	<version>46.0</version>
+</Package>
