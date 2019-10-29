@@ -1,0 +1,9 @@
+<apex:page controller="SymptomCheckerController">
+    <apex:pageBlock>
+        <apex:form>
+            <apex:pageBlockSection title="Conditions page">
+                <apex:commandButton value="Book an Appointment" action="{!goToBookingPage}"/>
+            </apex:pageBlockSection>
+        </apex:form>
+    </apex:pageBlock>
+</apex:page>
