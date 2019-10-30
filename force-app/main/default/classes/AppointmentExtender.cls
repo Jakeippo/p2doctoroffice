@@ -24,7 +24,4 @@ public with sharing class AppointmentExtender {
         insert appt;
         return null;
     }
-    /**
-    Doctor__c = [SELECT Id FROM Doctor__c WHERE Id = :doctorId][0], 
-            Patient__c = [SELECT Id FROM Contact WHERE Id = :patientId][0]); */
 }
