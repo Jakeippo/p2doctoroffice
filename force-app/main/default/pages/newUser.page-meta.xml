@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ApexPage xmlns="urn:metadata.tooling.soap.sforce.com" fqn="newUser">
-    <apiVersion>47.0</apiVersion>
-    <label>newUser</label>
-</ApexPage>
