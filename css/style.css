@@ -1,67 +1,52 @@
-.wholePage{
-    display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto auto;
-    grid-gap: 0px;
-    color: #fff;
-    background: linear-gradient(-45deg,#C6ECC6 0%, #50a3a2 50%, #53e3a6 100%);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;           
-}
 
-.header{
-    color: #fff;
-    background: linear-gradient(45deg, #C6ECC6 0%, #50a3a2 50%, #53e3a6 100%);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite; 
-    text-align: center;
-    margin: 0px;
-    padding: 70px;
-    font-size: 15px;
-    background-color: red;
-    grid-column-start: 1;
-    grid-column-end: 9;
-    border-radius: 25px;
-    border: 2px solid;
+body {
+  font-style:Courier;
+  background-image:  url('{!$Resource.back2}');
 }
-.column{
-    color: #fff;
-    background: linear-gradient(45deg, #C6ECC6 0%, #50a3a2 50%, #53e3a6 100%);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite; 
-    text-align: center;
-    margin: 0px;
-    padding: 70px;
-    font-size: 15px;
-    grid-column-start: 1;
-    grid-row-start: 2;
-    grid-row-end: 7;
-    padding: 90px 0;
-    border-radius: 25px;
-    border: 2px solid;
+.grid{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  
 }
-.mainSec {
-    color: #fff;
-    background: linear-gradient(45deg, #C6ECC6 0%, #50a3a2 50%, #53e3a6 100%);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite; 
-    text-align: center;
-    margin: 0px;
-    padding: 70px;
-    font-size: 15px;
-    grid-column-start: 2;
-    grid-column-end: 9;
-    grid-row-start: 2;
-    grid-row-end: 7;
+.column {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: black;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
 }
+.column a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+.column .close {
+  position: absolute;
+  top: 0;
+}
+.open {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #418544;
+  color: black;
+  border: none;
+}
+#mainSec {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 600px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 20px;}
+}
+    
 
-@keyframes gradientBG {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}

@@ -1,66 +1,7 @@
 <apex:page controller="pageController" >
     
-    <style>
+    <apex:stylesheet value="{!URLFOR($Resource.css)}"  />
 
-
-    body {
-      font-style:Courier;
-      background-image:  url('{!$Resource.back2}');
-      /* background-color: #d3d3d3; */
-
-    }
-    .grid{
-      display: grid;
-      grid-template-columns: auto auto auto;
-      
-    }
-    /* .img{
-      grid-row-start: 1;
-      grid-row-end: 3;
-    } */
-    
-    .column {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      z-index: 1;
-      top: 0;
-      left: 0;
-      background-color: black;
-      overflow-x: hidden;
-      transition: 0.5s;
-      padding-top: 60px;
-    }
-    .column a {
-      padding: 8px 8px 8px 32px;
-      text-decoration: none;
-      font-size: 25px;
-      color: white;
-      display: block;
-      transition: 0.3s;
-    }
-    .column .close {
-      position: absolute;
-      top: 0;
-    }
-    .open {
-      font-size: 20px;
-      cursor: pointer;
-      background-color: #418544;
-      color: black;
-      border: none;
-    }
-    #mainSec {
-      transition: margin-left .5s;
-      padding: 16px;
-    }
-    /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-    @media screen and (max-height: 600px) {
-      .sidebar {padding-top: 15px;}
-      .sidebar a {font-size: 20px;}
-    }
-        
-    </style>
         <script>
             function openBtn() {
               document.getElementById("sidebar").style.width = "200px";
@@ -81,28 +22,28 @@
         <apex:commandLink action="{!existingUser}" value= "Home" />
         <apex:commandLink action="{!AppointmentBookingPage}" value="Appointment Booker" /> 
         <a href="#">Symptom Checker</a>
-        <apex:commandLink action="{!loginPage}" value="Log Out" /> 
+        
       </apex:form>
     </div>
     
     
-    <body>
-      <!-- <apex:image value="{!$Resource.back}"/> -->
-      <div id="mainSec">
-      <!-- Header -->
-        <div>
-          <div  class="header" style="color: black; text-align:center; font-size: 80px;  ">
-                                      Doctor's Office
-            <button style="float: left; text-align:center" class="open" onclick="openBtn()">☰</button> 
-          </div>
+    <body style="background-image:  url('{!$Resource.back2}');" >
         
+      <div id="mainSec">
+
+  <!-- Header -->
+    <div>
+      <div  class="header" style="color: black; text-align:center; font-size: 80px;  ">
+                                  Doctor's Office
+        <button style="float: left; text-align:center" class="open" onclick="openBtn()">☰</button> 
       </div>
+    </div>
 
+<apex:pageBlock>
+  <apex:pageBlockSection columns="3">
 
-      <!-- Body-->
-  <apex:pageBlock>
-    <apex:pageBlockSection columns="3">
-    <apex:outputPanel>
+  <!-- User Detail--> 
+  <apex:outputPanel>
       <apex:pageBlock >
           <apex:pageBlockSection title="User Detail"  columns="2">
                 <apex:image style="align-self: left" id="pfp" value="{!$Resource.pfp}"/>
@@ -114,8 +55,9 @@
               </div>
           </apex:pageBlockSection>
       </apex:pageBlock>
-    </apex:outputPanel>
-      <!--Upcoming -->
+    </apex:outputPanel>   
+
+  <!--Upcoming and Past Appointment -->
     <apex:outputPanel>
       <apex:pageBlock>
           <apex:pageBlockSection title="Upcoming Appointments" columns="1">
@@ -124,30 +66,34 @@
                   <apex:column value="{!a.Doctor__c}"/>
                   <apex:column value="{!a.AppointmentDate__c}"/>
               </apex:pageBlockTable>
+
               <apex:form>
-              <apex:commandButton style="align-self: center"   action="{!AppointmentBookingPage}" value="Appointment Booker" /> 
+                <apex:commandButton style="text-align: center"   action="{!AppointmentBookingPage}" value="Appointment Booker" /> 
               </apex:form>
+              <!-- add past appointments -->
+              <apex:pageBlockSection title="Past Appointments" columns="1">
+              </apex:pageBlockSection>
+              
           </apex:pageBlockSection>
-        </apex:pageBlock>
-      </apex:outputPanel>
+      </apex:pageBlock>
+    </apex:outputPanel>
 
-        <!-- Past Appointment-->
-      <apex:outputPanel>
-        <apex:pageBlock>
-            <apex:pageBlockSection title="Past Appointments" columns="1">
-                <!-- Update with past events -->
-                <!-- <apex:pageBlockTable value="{!name}" var="a">
-                    <apex:column value="{!name}"/>
-                </apex:pageBlockTable> -->
+  <!-- Sympyom Checker -->
+    <apex:outputPanel>
+      <apex:pageBlock>
+        <apex:form>
+          <apex:pageBlockSection title="Symptom Checker" columns="1">
+              <apex:image style="align-self: left" id="pfp" value="{!$Resource.diagnose}" />
+          </apex:pageBlockSection>
+          <apex:commandButton style="float: center"   action="{!AppointmentBookingPage}" value="Symptom Checker" />
+        </apex:form>
+      </apex:pageBlock>
+    </apex:outputPanel>
 
-            </apex:pageBlockSection>
-        </apex:pageBlock>
-      </apex:outputPanel>
-
-      </apex:pageBlockSection>
-    </apex:pageBlock>
+  </apex:pageBlockSection>
+</apex:pageBlock>
        
 
-      </div>
-    </body>
-  </apex:page>
+    </div>
+  </body>
+</apex:page>
