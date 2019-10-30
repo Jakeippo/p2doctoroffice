@@ -25,7 +25,11 @@ node_modules/
 Thumbs.db
 ehthumbs.db
 [Dd]esktop.ini
+<<<<<<< HEAD
 $RECYCLE.BIN/
 manifest/package.xml
 .vscode/settings.json
 README.md
+=======
+$RECYCLE.BIN/
+>>>>>>> origin/tchan

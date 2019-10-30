@@ -1,0 +1,39 @@
+<apex:page controller="pageController">
+
+    <apex:form>
+
+        <div style="text-align:center; font-size: 50px; font-style:oblique; ">
+            <apex:pageBlock>
+                <apex:outputText value="Patient Portal" /> 
+                <!--<apex:image url ="{!$Resource.Doctor}" /> -->
+            </apex:pageBlock>
+        </div>
+    
+ 
+        <apex:pageBlock>
+                <div style="text-align:center;font-size: 25px; background-color:aquamarine)">
+                        <apex:outputText value ="Login Credentials " /> 
+                        <apex:pageMessages  id="showmsg"></apex:pageMessages>
+                </div>
+                <br />
+                <apex:pageBlockSection>
+                        <apex:outputText style="float:right;" value ="UserName" />
+                        <apex:inputText value="{!name}" />
+                </apex:pageBlockSection>
+                <apex:pageBlockSection>
+                        <apex:outputText  style="float:right;" value ="Password" />
+                        <apex:inputSecret value="{!checkPassword}" />
+                </apex:pageBlockSection>
+              
+                    <apex:pageBlockButtons location = "bottom" >
+                        <apex:commandButton style="margin-left: 25%" action="{!newUser}" value="Create Account" />
+                        <apex:commandButton style="margin-right: 25%;" action="{!existingUser}" value="Login" />
+                    </apex:pageBlockButtons>
+       
+        </apex:pageBlock>
+       
+
+
+
+    </apex:form>
+</apex:page>
