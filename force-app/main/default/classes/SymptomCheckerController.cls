@@ -92,30 +92,32 @@ public class SymptomCheckerController {
 
     public void populateResults() {
         Http http = new Http();
-        url = 'https://api.infermedica.com/v2/search?phrase=' + symptomInput + 
-                '&sex=' + contact.Gender__c + '&type=symptom';
-        System.debug(url);
-        HttpRequest req = new HttpRequest();
-        req.setEndpoint(url);
-        req.setMethod('GET');
-        req.setHeader('Content-Type', 'application/json');
-        req.setHeader('App-Id', '8af08433');    
-        req.setHeader('App-Key', 'e30db1e14f9c0b84858fac698c2eeef6');
-        HttpResponse res = http.send(req);
-        System.debug('Search Response: ' + res.getBody());
+        if(contact != null && symptomInput != null){
+            url = 'https://api.infermedica.com/v2/search?phrase=' + symptomInput + 
+                    '&sex=' + contact.Gender__c + '&type=symptom';
+            System.debug(url);
+            HttpRequest req = new HttpRequest();
+            req.setEndpoint(url);
+            req.setMethod('GET');
+            req.setHeader('Content-Type', 'application/json');
+            req.setHeader('App-Id', '8af08433');    
+            req.setHeader('App-Key', 'e30db1e14f9c0b84858fac698c2eeef6');
+            HttpResponse res = http.send(req);
+            System.debug('Search Response: ' + res.getBody());
 
-        listOfResults = (List<SearchResult>) JSON.deserialize(res.getBody(), List<SearchResult>.class);
-        for(SearchResult result : listOfResults) {
-            String resultId = result.id;
-            String resultLabel = result.label;
-            resultLabel = resultLabel.replace(',', '-');
-            System.debug('result: ' + resultId + ' ' + resultLabel);
-            if(resultId != null && resultLabel != null && searchResults != null) {
-                searchResults.add(new SelectOption(resultId, resultLabel));
-            }else{
-                System.debug('Result Id null: ' + resultId);
-                System.debug('Result Label null: ' + resultLabel);
-            }     
+            listOfResults = (List<SearchResult>) JSON.deserialize(res.getBody(), List<SearchResult>.class);
+            for(SearchResult result : listOfResults) {
+                String resultId = result.id;
+                String resultLabel = result.label;
+                resultLabel = resultLabel.replace(',', '-');
+                System.debug('result: ' + resultId + ' ' + resultLabel);
+                if(resultId != null && resultLabel != null && searchResults != null) {
+                    searchResults.add(new SelectOption(resultId, resultLabel));
+                }else{
+                    System.debug('Result Id null: ' + resultId);
+                    System.debug('Result Label null: ' + resultLabel);
+                }     
+            }
         }
     }
 
@@ -127,6 +129,11 @@ public class SymptomCheckerController {
         }else {
             return contact;
         }
+    }
+
+    public String processPhrase(String input) {
+        String processedString = input.replace(' ', '_');
+        System.debug('Processed String: ' + processedString);
     }
 
     public PageReference addSymptoms() {
