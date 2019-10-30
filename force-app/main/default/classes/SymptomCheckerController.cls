@@ -93,6 +93,7 @@ public class SymptomCheckerController {
     public void populateResults() {
         Http http = new Http();
         if(contact != null && symptomInput != null){
+            symptomInput = processPhrase(symptomInput);
             url = 'https://api.infermedica.com/v2/search?phrase=' + symptomInput + 
                     '&sex=' + contact.Gender__c + '&type=symptom';
             System.debug(url);
@@ -134,6 +135,7 @@ public class SymptomCheckerController {
     public String processPhrase(String input) {
         String processedString = input.replace(' ', '_');
         System.debug('Processed String: ' + processedString);
+        return processedString;
     }
 
     public PageReference addSymptoms() {
