@@ -1,15 +1,110 @@
 <apex:page controller="SymptomCheckerController">
-    <apex:pageBlock title="Follow up questions">
+    <style>
+        body {
+            font-style:Grotesque Sans;
+            background-color: #d3d3d3;
+        }
+        .column {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: black;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+        .column a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+        .column .close {
+            position: absolute;
+            top: 0;
+        }
+        .open {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #418544;
+            color: black;
+            border: none;
+        }
+        #mainSec {
+            transition: margin-left .5s;
+            padding: 16px;
+        }
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+        @media screen and (max-height: 600px) {
+            .sidebar {padding-top: 15px;}
+            .sidebar a {font-size: 20px;}
+        }
+    </style>
+    <script>
+        function openBtn() {
+            document.getElementById("sidebar").style.width = "200px";
+            document.getElementById("mainSec").style.marginLeft= "200px";
+        
+        }
+        
+        function closeBtn() {
+            document.getElementById("sidebar").style.width = "0";
+            document.getElementById("mainSec").style.marginLeft= "0";
+        }
+    </script>
+                
+    <!-- sidebar -->
+    <div id="sidebar" class="column">
         <apex:form>
-            <apex:pageBlockSection title="Follow up question 1">
-                <apex:commandButton value="Yes" />
-                <apex:commandButton value="No" />
-            </apex:pageBlockSection>
-            <apex:pageBlockSection title="Follow up question 2">
-                <apex:commandButton value="Yes" />
-                <apex:commandButton value="No" />
-            </apex:pageBlockSection>
-            <apex:commandButton value="continue" action="{!goToConditionsPage}"/>
+        <a href="javascript:void(0)" class="close" onclick="closeBtn()">x</a>
+        <!-- <apex:commandLink action="{!existingUser}" value= "Home" /> -->
+        <!-- <apex:commandLink action="{!AppointmentBookingPage}" value="Appointment Booker" />  -->
+        <a href="#">Symptom Checker</a>
+        <!-- <apex:commandLink action="{!loginPage}" value="Log Out" />  -->
         </apex:form>
-    </apex:pageBlock>
+    </div>
+    <body>
+        <!-- PASTE YOUR CODE INSIDE mainSec-->
+        <div id="mainSec">
+            <div>
+                <div  class="header" style="color: white; text-align:center; font-size: 90px; font-style:Grotesque Sans;
+                                            background-color:black;
+                                            border: 1px solid black; ">
+                    Follow-up Questions
+                    <button style="float: left; text-align:center" class="open" onclick="openBtn()">☰</button>
+                </div>
+            </div>
+            <apex:pageBlock title="">
+                <apex:form>
+                    <apex:pageBlockSection title="Follow up question 1">
+                        <apex:outputPanel rendered="{!If (q.question.type == 'single', true, false)}">
+                            <!-- Yes, no, I don't know answer -->
+                            single
+                            <apex:selectRadio value="{!answer}">
+                                <apex:selectOptions value="{!userChoices}" />
+                            </apex:selectRadio>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!If (q.question.type == 'group_single', true, false)}">
+                            <!--choose one-->
+                            <apex:selectRadio value="{!answer}">
+                                <apex:selectOptions value="{!userChoices}" />
+                            </apex:selectRadio>
+                            <apex:commandButton value="Submit Answer" action="{!answerQuestion}"/>
+                            Group single
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!If (q.question.type == 'group_multiple', true, false)}">
+                            <!-- Choose more than one -->
+                            Group multiple
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>
+                    <apex:commandButton value="continue" action="{!goToConditionsPage}"/>
+                </apex:form>
+            </apex:pageBlock>
+        </div>
+    </body>
 </apex:page>
