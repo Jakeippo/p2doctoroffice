@@ -1,59 +1,6 @@
 <apex:page controller="pageController">
 
-    <style>
-
-        .userDetail {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-        }
-
-
-        body {
-            font-style:Grotesque Sans;
-            background-color: #d3d3d3;
-        }
-        .column {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: black;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-        .column a {
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 25px;
-            color: white;
-            display: block;
-            transition: 0.3s;
-        }
-        .column .close {
-            position: absolute;
-            top: 0;
-        }
-        .open {
-            font-size: 20px;
-            cursor: pointer;
-            background-color: #418544;
-            color: black;
-            border: none;
-        }
-        #mainSec {
-            transition: margin-left .5s;
-            padding: 16px;
-        }
-        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-        @media screen and (max-height: 600px) {
-            .sidebar {padding-top: 15px;}
-            .sidebar a {font-size: 20px;}
-        }
-        
-    </style>
+    <apex:stylesheet value="{!URLFOR($Resource.css)}"  />
         <script>
             function openBtn() {
                 document.getElementById("sidebar").style.width = "200px";
@@ -74,34 +21,30 @@
             <apex:commandLink action="{!existingUser}" value= "Home" />
             <apex:commandLink action="{!AppointmentBookingPage}" value="Appointment Booker" /> 
             <a href="#">Symptom Checker</a>
-            <apex:commandLink action="{!loginPage}" value="Log Out" /> 
+            
             </apex:form>
         </div>
           
-    <body>
-    <div id="mainSec">
-            <div>
-                    <div  class="header" style="color: white; text-align:center; font-size: 90px; font-style:Grotesque Sans; 
-                                                background-color:black; 
-                                                border: 1px solid black; ">
-                                                Book an Appointment
-                      <button style="float: left; text-align:center" class="open" onclick="openBtn()">☰</button> 
-                    </div>
-                 
-                  </div>
-
-    <apex:pageBlock>
-        <apex:form>
-            <apex:pageBlockTable value="{!appt}" var="a">
-                <apex:column value = "{!a.Doctor__c}" />
-                <apex:column value = "{!a.AppointmentDate__c}" />
-            </apex:pageBlockTable>
-                Select a date/time
-                <apex:inputField value="{!appt.AppointmentDate__c}"/>
-                <apex:commandButton action="{!save}" value="SAVE"/>
-                
-        </apex:form>                              
-    </apex:pageBlock>
-    </div>
+    <body style="background-image:  url('{!$Resource.back2}');">
+        <div id="mainSec">
+        <div>
+            <div  class="header" style="color: black; text-align:center; font-size: 80px;  ">
+                                        Book Your Appointment
+                <button style="float: left; text-align:center" class="open" onclick="openBtn()">☰</button> 
+            </div>
+        </div>
+            <apex:pageBlock>
+                <apex:form>
+                    <apex:pageBlockTable value="{!appt}" var="a">
+                        <apex:column value = "{!a.Doctor__c}" />
+                        <apex:column value = "{!a.AppointmentDate__c}" />
+                    </apex:pageBlockTable>
+                        Select a date/time
+                        <apex:inputField value="{!appt.AppointmentDate__c}"/>
+                        <apex:commandButton action="{!save}" value="SAVE"/>
+                        
+                </apex:form>                              
+            </apex:pageBlock>
+        </div>
     </body>
 </apex:page>

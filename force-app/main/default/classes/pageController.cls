@@ -16,11 +16,6 @@ public with sharing class pageController {
         }
         set;
     }
-    // public pageController(){
-    //     doctorId = Id.valueOf(apexpages.currentpage().getparameters().get('Doc'));
-    //     patientId = Id.valueOf(apexpages.currentpage().getparameters().get('Pat'));
-    //     appt = new Appointment__c(Doctor__c = doctorId, Patient__c = patientId);
-    // }
     
     public Pagereference save(){
         insert appt;
@@ -31,21 +26,8 @@ public with sharing class pageController {
         return Page.AppointmentBookingPage;
     }
 
-    public Pagereference loginPage(){
-        return Page.loginPage;
-    }
-
-    public PageReference newUser(){
-        return Page.newUser;
-    }
-
     public PageReference existingUser(){
-        if(checkPassword != password || checkUserName!=userName){
-                ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,'Wrong Username or Password'));
-                    return null;
-        } else {
-                    return Page.existingUser;
-         }
+        return Page.existingUser;
     }
 
     //Appointment Booker

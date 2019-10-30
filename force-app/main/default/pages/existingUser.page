@@ -22,78 +22,77 @@
         <apex:commandLink action="{!existingUser}" value= "Home" />
         <apex:commandLink action="{!AppointmentBookingPage}" value="Appointment Booker" /> 
         <a href="#">Symptom Checker</a>
-        
       </apex:form>
     </div>
     
     
-    <body style="background-image:  url('{!$Resource.back2}');" >
-        
-      <div id="mainSec">
+  <body style="background-image:  url('{!$Resource.back2}');" > 
+    <div id="mainSec">
 
-  <!-- Header -->
-    <div>
-      <div  class="header" style="color: black; text-align:center; font-size: 80px;  ">
-                                  Doctor's Office
-        <button style="float: left; text-align:center" class="open" onclick="openBtn()">☰</button> 
+      <!-- Header -->
+      <div>
+        <div  class="header" style="color: black; text-align:center; font-size: 80px;  ">
+                                    Doctor's Office
+          <button style="float: left; text-align:center" class="open" onclick="openBtn()">☰</button> 
+        </div>
       </div>
-    </div>
 
-<apex:pageBlock>
-  <apex:pageBlockSection columns="3">
+    <!-- creates 3 columns -->
+    <apex:pageBlock>
+      <apex:pageBlockSection columns="3">
 
-  <!-- User Detail--> 
-  <apex:outputPanel>
-      <apex:pageBlock >
-          <apex:pageBlockSection title="User Detail"  columns="2">
-                <apex:image style="align-self: left" id="pfp" value="{!$Resource.pfp}"/>
-              <div class="info">
-                <apex:outputText value="Toby Chan" label="Full Name" />
-                <apex:outputText value="22" label="Age" />
-                <apex:outputText value="toby.chan@revature.net" label="Email" />
-                <apex:outputText value="Male" label="Gender" />
-              </div>
-          </apex:pageBlockSection>
-      </apex:pageBlock>
-    </apex:outputPanel>   
-
-  <!--Upcoming and Past Appointment -->
-    <apex:outputPanel>
-      <apex:pageBlock>
-          <apex:pageBlockSection title="Upcoming Appointments" columns="1">
-              <!-- add upcoming appointments -->
-              <apex:pageBlockTable value="{!appt}" var="a">
-                  <apex:column value="{!a.Doctor__c}"/>
-                  <apex:column value="{!a.AppointmentDate__c}"/>
-              </apex:pageBlockTable>
-
-              <apex:form>
-                <apex:commandButton style="text-align: center"   action="{!AppointmentBookingPage}" value="Appointment Booker" /> 
-              </apex:form>
-              <!-- add past appointments -->
-              <apex:pageBlockSection title="Past Appointments" columns="1">
+      <!-- User Detail--> 
+      <apex:outputPanel>
+          <apex:pageBlock >
+              <apex:pageBlockSection title="User Detail"  columns="2">
+                    <apex:image style="align-self: left" id="pfp" value="{!$Resource.pfp}"/>
+                  <div class="info">
+                    <apex:outputText value="Toby Chan" label="Full Name" />
+                    <apex:outputText value="22" label="Age" />
+                    <apex:outputText value="toby.chan@revature.net" label="Email" />
+                    <apex:outputText value="Male" label="Gender" />
+                  </div>
               </apex:pageBlockSection>
-              
-          </apex:pageBlockSection>
-      </apex:pageBlock>
-    </apex:outputPanel>
+          </apex:pageBlock>
+      </apex:outputPanel>   
 
-  <!-- Sympyom Checker -->
-    <apex:outputPanel>
-      <apex:pageBlock>
-        <apex:form>
-          <apex:pageBlockSection title="Symptom Checker" columns="1">
-              <apex:image style="align-self: left" id="pfp" value="{!$Resource.diagnose}" />
-          </apex:pageBlockSection>
-          <apex:commandButton style="float: center"   action="{!AppointmentBookingPage}" value="Symptom Checker" />
-        </apex:form>
-      </apex:pageBlock>
-    </apex:outputPanel>
+      <!--Upcoming and Past Appointment -->
+        <apex:outputPanel>
+          <apex:pageBlock>
+              <apex:pageBlockSection title="Upcoming Appointments" columns="1">
+                  <!-- add upcoming appointments -->
+                  <apex:pageBlockTable value="{!appt}" var="a">
+                      <apex:column value="{!a.Doctor__c}"/>
+                      <apex:column value="{!a.AppointmentDate__c}"/>
+                  </apex:pageBlockTable>
 
-  </apex:pageBlockSection>
-</apex:pageBlock>
+                  <apex:form>
+                    <apex:commandButton style="text-align: center"   action="{!AppointmentBookingPage}" value="Appointment Booker" /> 
+                  </apex:form>
+                  <!-- add past appointments -->
+                  <apex:pageBlockSection title="Past Appointments" columns="1">
+                  </apex:pageBlockSection>
+                  
+              </apex:pageBlockSection>
+          </apex:pageBlock>
+        </apex:outputPanel>
+
+      <!-- Sympyom Checker -->
+        <apex:outputPanel>
+          <apex:pageBlock>
+            <apex:form>
+              <apex:pageBlockSection title="Symptom Checker" columns="1">
+                  <apex:image style="align-self: left" id="pfp" value="{!$Resource.diagnose}" />
+              </apex:pageBlockSection>
+              <apex:commandButton style="float: center"   action="{!AppointmentBookingPage}" value="Symptom Checker" />
+            </apex:form>
+          </apex:pageBlock>
+        </apex:outputPanel>
+
+
+      </apex:pageBlockSection>
+    </apex:pageBlock>
        
-
     </div>
   </body>
 </apex:page>

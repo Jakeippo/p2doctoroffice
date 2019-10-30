@@ -1,7 +1,7 @@
 
 body {
   font-style:Courier;
-  background-image:  url('{!$Resource.back2}');
+  /* background-image:  url('{!$Resource.back2}'); */
 }
 .grid{
   display: grid;
