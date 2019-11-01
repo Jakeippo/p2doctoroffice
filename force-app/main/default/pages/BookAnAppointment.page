@@ -1,0 +1,105 @@
+<apex:page standardController="Appointment__c" recordSetVar="appointments"
+extensions="AppointmentExtender">
+<script type="text/javascript">
+    //var validTable = Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.AppointmentExtender.getValidDates}');
+    /*
+    console.log('hi');
+    Visualforce.remoting.Manager.invokeAction(
+    '{!$RemoteAction.AppointmentExtender.getValidDates}'
+    function (result, event) {
+        console.log(event.status);
+        console.log(JSON.stringify(result);
+        if (event.status) {
+
+        }
+    },
+    {
+        // configuration
+    }));   
+    */
+    function getTruth() {
+
+    Visualforce.remoting.Manager.invokeAction(
+        '{!$RemoteAction.AppointmentExtender.getValidDates}',
+        function(result, event){
+            console.log(event.status);
+            console.log(JSON.stringify(result));
+            console.log(JSON.stringify(result[0]));
+            console.log(JSON.stringify(result[0][0]));
+            if (event.status) {
+                //document.getElementById('acctId').innerHTML = result.Id
+               // document.getElementById('acctName').innerHTML = result.Name;
+            } else if (event.type === 'exception') {
+                //document.getElementById("responseErrors").innerHTML = event.message;
+            } else {
+                //document.getElementById("responseErrors").innerHTML = event.message;
+            }
+        }, 
+        {escape: true}
+    );
+    }
+    function checkValidEntry(column, row){
+        let buttonC = 'DT'+column.toString()+row.toString();
+        let shouldEnable = validTable[parseInt(row)][parseInt(column)];
+        console.log(buttonC);
+        console.log(shouldEnable); 
+        document.getElementById(buttonC).attr("disabled", shouldEnable);
+        
+    }
+
+    function RefreshAll(){
+        var i = 0;
+        var j = 0;
+        while(i<10){
+            while(j<8){
+                checkValidEntry(j,i);
+                j += 1;
+            }
+            i+=1;
+            j=0;
+        }
+    }
+    getTruth();
+    //RefreshAll();
+    var counter1 = 0;
+    function showCounter(){
+        counter1 += 1
+        console.log(counter1);
+    }
+</script>
+
+<h1>Book An Appointment</h1>
+    <apex:pageBlock>
+        <apex:pageBlockTable value = "{!displayedAppointments}" var = "a">
+            <apex:column value = "{!a.Doctor__c}" />
+            <apex:column value = "{!a.DoctorName__c}" />
+            <apex:column value = "{!a.AppointmentDate__c}" />
+        </apex:pageBlockTable>
+        <apex:form>
+            Select a date/time
+            <apex:inputField value="{!appt.AppointmentDate__c}"/>
+            <apex:commandButton action="{!save}" value="SAVE"/>
+        </apex:form>
+        <br></br> 
+        <apex:form>
+            <apex:dynamicComponent componentValue="{!testButton}"/>
+
+        </apex:form>
+           
+    </apex:pageBlock>
+
+    <!-- <apex:form>
+        <apex:dynamicComponent componentValue="{!weekButtons}"/>
+    </apex:form>  -->
+
+    <apex:form id="week">
+        <apex:repeat value="{!values}" var="a" id="time">
+                <apex:repeat value="{!myS}" var="b" id="day">
+                    <!-- <apex:dynamicComponent componentValue="{!testButton}" /> -->
+                    <!-- <apex:outputText value="{!a} "/> -->
+                    <apex:commandButton action="{!save}" value="{!a}" id="select"/>
+                </apex:repeat>
+                <br></br>
+        </apex:repeat>
+    </apex:form>
+</apex:page>

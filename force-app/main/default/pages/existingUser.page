@@ -1,0 +1,104 @@
+<apex:page controller="pageController" >
+    
+    <apex:stylesheet value="{!URLFOR($Resource.css)}"  />
+
+        <script>
+            function openBtn() {
+              document.getElementById("sidebar").style.width = "200px";
+              document.getElementById("mainSec").style.marginLeft= "200px";
+            
+            }
+            
+            function closeBtn() {
+              document.getElementById("sidebar").style.width = "0";
+              document.getElementById("mainSec").style.marginLeft= "0";
+            }
+        </script>
+    
+    <!-- sidebar -->
+    <div id="sidebar" class="column">
+      <apex:form>
+        <a href="javascript:void(0)" class="close" onclick="closeBtn()">x</a>
+        <apex:commandLink action="{!existingUser}" value= "Home" />
+        <apex:commandLink action="{!AppointmentBookingPage}" value="Appointment Booker" /> 
+        <a href="#">Symptom Checker</a>
+      </apex:form>
+    </div>
+    
+    
+  <body style="background-image:  url('{!$Resource.back2}');" > 
+    <div id="mainSec">
+
+    <!-- Header -->
+    <div>
+      <div  class="header" style="color: black; text-align:center; font-size: 80px; text-transform: uppercase;">
+        Doctor's Office
+        <button style="float: left; text-align:center" class="open" onclick="openBtn()">☰</button> 
+      </div>
+    </div>
+
+    <!-- creates 3 columns -->
+    <apex:pageBlock>
+      <apex:pageBlockSection columns="3">
+
+      <!-- User Detail--> 
+      <apex:outputPanel>
+          <apex:pageBlock >
+              <div style="box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)">
+              <apex:pageBlockSection title="User Detail"  columns="2">
+                    <apex:image style="align-self: left" id="pfp" value="{!$Resource.pfp}"/>
+                  <div class="info">
+                    <apex:outputText value="Toby Chan" label="Full Name" />
+                    <apex:outputText value="22" label="Age" />
+                    <apex:outputText value="toby.chan@revature.net" label="Email" />
+                    <apex:outputText value="Male" label="Gender" />
+                  </div>
+              </apex:pageBlockSection>
+              </div>
+          </apex:pageBlock>
+      </apex:outputPanel>   
+
+      <!--Upcoming and Past Appointment -->
+      <apex:outputPanel>
+        <apex:pageBlock>
+          <div style="box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)">
+            <apex:pageBlockSection title="Upcoming Appointments" columns="1">
+                <!-- add upcoming appointments -->
+                <apex:pageBlockTable value="{!appt}" var="a">
+                    <apex:column value="{!a.Doctor__c}"/>
+                    <apex:column value="{!a.AppointmentDate__c}"/>
+                </apex:pageBlockTable>
+
+                <apex:form>
+                  <apex:commandButton style="box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)"   action="{!AppointmentBookingPage}" value="Appointment Booker" /> 
+                </apex:form>
+                <!-- add past appointments -->
+                <apex:pageBlockSection title="Past Appointments" columns="1">
+                </apex:pageBlockSection>
+                
+            </apex:pageBlockSection>
+          </div>
+        </apex:pageBlock>
+      </apex:outputPanel>
+
+      <!-- Sympyom Checker -->
+      <apex:outputPanel>
+        <apex:pageBlock>
+          <div style="box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)">
+            <apex:form>
+              <apex:pageBlockSection title="Symptom Checker" columns="1">
+                <apex:image style="align-self: right" id="pfp" value="{!$Resource.dr}" />
+              </apex:pageBlockSection>
+              <apex:commandButton style="box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)"   action="{!AppointmentBookingPage}" value="Symptom Checker" />
+            </apex:form>
+          </div>
+        </apex:pageBlock>
+      </apex:outputPanel>
+
+
+      </apex:pageBlockSection>
+    </apex:pageBlock>
+       
+    </div>
+  </body>
+</apex:page>
