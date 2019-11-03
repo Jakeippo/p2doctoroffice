@@ -72,12 +72,12 @@ extensions="AppointmentExtender">
     <apex:pageBlock>
         <apex:pageBlockTable value = "{!displayedAppointments}" var = "a">
             <apex:column value = "{!a.Doctor__c}" />
-            <apex:column value = "{!a.DoctorName__c}" />
-            <apex:column value = "{!a.AppointmentDate__c}" />
+            <apex:column value = "{!a.Doctor__r.Name}" />
+            <apex:column value = "{!a.Date__c}" />
         </apex:pageBlockTable>
         <apex:form>
             Select a date/time
-            <apex:inputField value="{!appt.AppointmentDate__c}"/>
+            <apex:inputField value="{!appt.Date__c}"/>
             <apex:commandButton action="{!save}" value="SAVE"/>
         </apex:form>
         <br></br> 

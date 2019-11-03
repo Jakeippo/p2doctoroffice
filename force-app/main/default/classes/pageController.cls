@@ -10,7 +10,7 @@ public with sharing class pageController {
     private Id patientId;
     public Appointment__c appt{
         get{
-            appt = [SELECT Doctor__c, AppointmentDate__c FROM Appointment__c LIMIT 1
+            appt = [SELECT Doctor__c, Doctor__r.Name, Date__c FROM Appointment__c LIMIT 1
             ];
             return appt;
         }

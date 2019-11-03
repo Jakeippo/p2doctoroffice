@@ -131,7 +131,7 @@ global with sharing class AppointmentExtender {
                                 Time.newInstance(16, 0, 0, 0),
                                 Time.newInstance(17, 0, 0, 0)};
         setController = new ApexPages.StandardSetController(
-            [SELECT Doctor__c, DoctorName__c, AppointmentDate__c FROM Appointment__c WHERE Doctor__c = :doctorId]);
+            [SELECT Doctor__c, Doctor__r.Name, Date__c FROM Appointment__c WHERE Doctor__c = :doctorId]);
     }
 
     public List<Appointment__c> displayedAppointments {

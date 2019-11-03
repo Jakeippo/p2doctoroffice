@@ -1,6 +1,6 @@
 <apex:page controller="pageController" >
     
-    <apex:stylesheet value="{!URLFOR($Resource.css)}"  />
+    <!--<apex:stylesheet value="{!URLFOR($Resource.css)}"  />-->
 
         <script>
             function openBtn() {
@@ -26,7 +26,8 @@
     </div>
     
     
-  <body style="background-image:  url('{!$Resource.back2}');" > 
+  <!--<body style="background-image:  url('{!$Resource.back2}');" > -->
+    <body>
     <div id="mainSec">
 
     <!-- Header -->
@@ -46,7 +47,7 @@
           <apex:pageBlock >
               <div style="box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)">
               <apex:pageBlockSection title="User Detail"  columns="2">
-                    <apex:image style="align-self: left" id="pfp" value="{!$Resource.pfp}"/>
+                    <!--<apex:image style="align-self: left" id="pfp" value="{!$Resource.pfp}"/>-->
                   <div class="info">
                     <apex:outputText value="Toby Chan" label="Full Name" />
                     <apex:outputText value="22" label="Age" />
@@ -66,7 +67,7 @@
                 <!-- add upcoming appointments -->
                 <apex:pageBlockTable value="{!appt}" var="a">
                     <apex:column value="{!a.Doctor__c}"/>
-                    <apex:column value="{!a.AppointmentDate__c}"/>
+                    <apex:column value="{!a.Date__c}"/>
                 </apex:pageBlockTable>
 
                 <apex:form>
@@ -87,7 +88,7 @@
           <div style="box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)">
             <apex:form>
               <apex:pageBlockSection title="Symptom Checker" columns="1">
-                <apex:image style="align-self: right" id="pfp" value="{!$Resource.dr}" />
+                <!--<apex:image style="align-self: right" id="pfp" value="{!$Resource.dr}" />-->
               </apex:pageBlockSection>
               <apex:commandButton style="box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)"   action="{!AppointmentBookingPage}" value="Symptom Checker" />
             </apex:form>
