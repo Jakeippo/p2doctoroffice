@@ -80,9 +80,19 @@
                 </div>
             </div>
             <apex:pageBlock>
+                <apex:messages/>
                 <apex:form>
                     <apex:pageBlockSection title="Conditions page">
-                        <apex:commandButton value="Book an Appointment" action="{!goToBookingPage}"/>
+                        <apex:pageBlockTable value="{!likelyConditions}" var="condition">
+                            <apex:column value="{!condition.name}" headerValue="Condition name" />
+                            <apex:column value="{!condition.probability}" headerValue="Condition probability" />
+                            <apex:column value="{!condition.categories[0]}" headerValue="Medical Category" />
+                            <apex:column headerValue="Book Appointment">
+                                <apex:commandLink value="Book an Appointment" action="{!bookingPage}">
+                                    <apex:param name="conditionToSend" value="{!condition.categories[0]}" assignTo="{!categoryToSend}" />
+                                </apex:commandLink>
+                            </apex:column>
+                        </apex:pageBlockTable>
                     </apex:pageBlockSection>
                 </apex:form>
             </apex:pageBlock>

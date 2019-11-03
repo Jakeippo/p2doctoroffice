@@ -1,50 +1,5 @@
 <apex:page controller="SymptomCheckerController">
-    <style>
-        body {
-            font-style:Grotesque Sans;
-            background-color: #d3d3d3;
-        }
-        .column {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: black;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-        .column a {
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 25px;
-            color: white;
-            display: block;
-            transition: 0.3s;
-        }
-        .column .close {
-            position: absolute;
-            top: 0;
-        }
-        .open {
-            font-size: 20px;
-            cursor: pointer;
-            background-color: #418544;
-            color: black;
-            border: none;
-        }
-        #mainSec {
-            transition: margin-left .5s;
-            padding: 16px;
-        }
-        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-        @media screen and (max-height: 600px) {
-            .sidebar {padding-top: 15px;}
-            .sidebar a {font-size: 20px;}
-        }
-    </style>
+    <apex:stylesheet value="{!URLFOR($Resource.css)}"  />
     <script>
         function openBtn() {
             document.getElementById("sidebar").style.width = "200px";
@@ -70,13 +25,12 @@
     </div>
             
             
-    <body>
+    <body style="background-image:  url('{!$Resource.back2}');">
         <!-- PASTE YOUR CODE INSIDE mainSec-->
         <div id="mainSec">
             <div>
-                <div  class="header" style="color: white; text-align:center; font-size: 90px; font-style:Grotesque Sans;
-                                            background-color:black;
-                                            border: 1px solid black; ">
+                <div  class="header" style="color: black; text-align:center; font-size: 90px; font-style:Grotesque Sans;
+                                             ">
                     Symptom Checker
                     <button style="float: left; text-align:center" class="open" onclick="openBtn()">☰</button>
                 </div>
@@ -89,15 +43,8 @@
             <apex:pageBlock title="Symptom Identification" id="searchResults">
                 <apex:pageBlockButtons >
                 </apex:pageBlockButtons>
-                <apex:pageBlockSection title="Patient Information">
-                    <apex:outputField value="{!contact.Id}" />
-                    <apex:outputField value="{!contact.Name}" />
-                    <apex:outputField value="{!contact.Age__c}" />
-                    <apex:outputField value="{!contact.Gender__c}" />
-                    
-                </apex:pageBlockSection>
                 <apex:form>
-                    <apex:pageBlockSection title="Symptom Information" columns="1">
+                    <apex:pageBlockSection title="Symptom Information" columns="1" collapsible="false">
                         <apex:outputText value="Symptom" />
                         <apex:outputPanel id="inputs">
                             <apex:inputText value="{!symptomInput}"/>
@@ -108,18 +55,21 @@
                             </apex:commandButton>
                         </apex:actionRegion>
                     </apex:pageBlockSection>
-                    <apex:pageBlockSection title="Symptom Search Results" id="searchResults" columns="1">
-                        <apex:selectCheckBoxes value="{!selectedSymptoms}" layout="pageDirection">
-                            <apex:selectOptions value="{!results}" />
-                        </apex:selectCheckBoxes>
-                        <apex:commandButton value="Add symptoms" action="{!addSymptoms}"/> 
+                    <apex:pageBlockSection columns="2" collapsible="false">
+                        <apex:pageBlockSection title="Symptom Search Results"  id="searchResults" collapsible="false" columns="1">
+                            <apex:selectCheckBoxes value="{!selectedSymptoms}" layout="pageDirection">
+                                <apex:selectOptions value="{!results}" />
+                            </apex:selectCheckBoxes>
+                            <apex:commandButton value="Add symptoms" action="{!addSymptoms}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="List of selected symptoms" collapsible="false" columns="1">
+                            <apex:pageBlockTable value="{!symptomMap}" var="s">
+                                <apex:column value="{!symptomMap[s]}"></apex:column>
+                            </apex:pageBlockTable>
+                            <apex:commandButton value="Diagnose" action="{!diagnose}"/>
+                        </apex:pageBlockSection>
                     </apex:pageBlockSection>
-                    <apex:pageBlockSection title="List of selected symptoms">
-                        <apex:pageBlockTable value="{!symptomMap}" var="s">
-                            <apex:column value="{!symptomMap[s]}"></apex:column>
-                        </apex:pageBlockTable>
-                        <apex:commandButton value="Diagnose" action="{!diagnose}"/>
-                    </apex:pageBlockSection>
+                    
                 </apex:form> 
             </apex:pageBlock>
         </div>

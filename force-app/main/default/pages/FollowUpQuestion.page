@@ -79,30 +79,39 @@
                     <button style="float: left; text-align:center" class="open" onclick="openBtn()">☰</button>
                 </div>
             </div>
+            <apex:messages />
             <apex:pageBlock title="">
                 <apex:form>
-                    <apex:pageBlockSection title="Follow up question 1">
+                    <apex:pageBlockSection title="Follow up question" columns="1">
                         <apex:outputPanel rendered="{!If (q.question.type == 'single', true, false)}">
-                            <!-- Yes, no, I don't know answer -->
-                            single
-                            <apex:selectRadio value="{!answer}">
+
+                            <apex:outputText style="font-weight:bold; font-size: 1.5em;" value="{!q.question.text}"/>
+                            <apex:selectRadio value="{!answer}" layout="pageDirection" required="true">
                                 <apex:selectOptions value="{!userChoices}" />
                             </apex:selectRadio>
+                            <apex:commandButton value="Submit Answer" action="{!diagnose}"/>
+                            single
                         </apex:outputPanel>
                         <apex:outputPanel rendered="{!If (q.question.type == 'group_single', true, false)}">
                             <!--choose one-->
-                            <apex:selectRadio value="{!answer}">
+                            <apex:outputText style="font-weight:bold; font-size: 1.5em;" value="{!q.question.text}"/>
+                            <apex:selectRadio value="{!answer}" layout="pageDirection" required="true">
                                 <apex:selectOptions value="{!userChoices}" />
                             </apex:selectRadio>
-                            <apex:commandButton value="Submit Answer" action="{!answerQuestion}"/>
+                            <apex:commandButton value="Submit Answer" action="{!diagnose}"/>
                             Group single
                         </apex:outputPanel>
                         <apex:outputPanel rendered="{!If (q.question.type == 'group_multiple', true, false)}">
                             <!-- Choose more than one -->
+                            <apex:outputText style="font-weight:bold; font-size: 1.5em;" value="{!q.question.text}"/>
+                            <apex:selectCheckboxes value="{!answers}" layout="pageDirection" required="true">
+                                <apex:selectOptions value="{!userChoices}" />
+                            </apex:selectCheckboxes>
+                            <apex:commandLink value="Submit Answer" action="{!diagnose}"/>
                             Group multiple
                         </apex:outputPanel>
+                        {!testJson}
                     </apex:pageBlockSection>
-                    <apex:commandButton value="continue" action="{!goToConditionsPage}"/>
                 </apex:form>
             </apex:pageBlock>
         </div>

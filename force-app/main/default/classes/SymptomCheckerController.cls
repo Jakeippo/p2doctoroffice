@@ -8,67 +8,36 @@ public class SymptomCheckerController {
     public Map<String, String> symptomMap = new Map<String, String>();
     public Contact contact;
     public Id contactId;
-    public String symptomInput{get; set;}
+    public String categoryToSend {get; set;}
+    public String symptomInput{get {
+        if(symptomInput == null) return '';
+        else return symptomInput;
+
+    } set;}
     public QuestionResponse q {get; set;}
     public String answer {get; set;}
+    public List<String> answers {get{
+        if(answers == null) 
+        return new List<String>();
+
+        else return answers;
+        } set;
+    }
+
+    public List<Condition> likelyConditions;
     public List<SelectOption> userChoices = new List<SelectOption>();
+    DiagnosisRequest dr = new DiagnosisRequest();
+    public String userChoice {get; set;}
+    public String symptomId {get; set;}
 
     public String testJson {get; set;}
 
-    // public class Symptom {
-    //     public String id{get; set;}
-    //     public String name{get; set;}
-    //     public String common_name{get; set;}
-    //     public String sex_filter{get; set;}
-    //     public String category{get; set;}
-    //     public String seriousness{get; set;}
-    // }
-
     public SymptomCheckerController(){
         contactId = ApexPages.currentPage().getParameters().get('Id');
+        getContact();
+        likelyConditions = new List<Condition>();
     }
 
-    public class SearchResult {
-        public String id{get; set;}        
-        public String label{get; set;}
-    }
-
-    public class DiagnosisRequest {
-        public String sex {get;set;}
-        public Integer age {get; set;}
-        public List<Evidence> evidence = new List<Evidence>();
-
-        public List<Evidence> getEvidence() {
-            return evidence;
-        }
-    }
-
-    public class Evidence {
-        public String id{get; set;}
-        public Boolean initial{get;set;}
-        public String choice_id = 'present';
-    }
-
-    public class Item {
-        public String id {get; set;}
-        public String name {get;set;}
-        public List<Choice> choices {get; set;}
-    }
-
-    public class Choice {
-        public String id {get; set;}
-        public String label {get; set;}
-    }
-    
-    public class Question {
-        public String type {get; set;}
-        public String text {get; set;}
-        public List<Item> items {get; set;}
-    }
-
-    public class QuestionResponse {
-        public Question question {get;set;}
-    }
 
     public Map<String, String> getSymptomMap() {
         return symptomMap;
@@ -86,39 +55,39 @@ public class SymptomCheckerController {
     }
 
     public List<SelectOption> getUserChoices() {
-        System.debug('Choices after refresh: ' + userChoices);
         return userChoices;
     }
 
-    public void populateResults() {
-        Http http = new Http();
-        if(contact != null && symptomInput != null){
-            symptomInput = processPhrase(symptomInput);
-            url = 'https://api.infermedica.com/v2/search?phrase=' + symptomInput + 
-                    '&sex=' + contact.Gender__c + '&type=symptom';
-            System.debug(url);
-            HttpRequest req = new HttpRequest();
-            req.setEndpoint(url);
-            req.setMethod('GET');
-            req.setHeader('Content-Type', 'application/json');
-            req.setHeader('App-Id', '8af08433');    
-            req.setHeader('App-Key', 'e30db1e14f9c0b84858fac698c2eeef6');
-            HttpResponse res = http.send(req);
-            System.debug('Search Response: ' + res.getBody());
+    public List<Condition> getLikelyConditions() {
+        System.debug('Likely Condition after refresh: ' + likelyConditions);
+        if(likelyConditions == null) {
+            return new List<Condition>();
+        }else {
+            return likelyConditions;
+        }
+    }
 
+    public void populateResults() {
+
+        HttpResponse res = callToApi('search');
+
+        if(res.getStatusCode() == 400){
+            listOfResults = new List<SearchResult>();
+        }else if(res.getStatusCode() == 200) {
             listOfResults = (List<SearchResult>) JSON.deserialize(res.getBody(), List<SearchResult>.class);
-            for(SearchResult result : listOfResults) {
-                String resultId = result.id;
-                String resultLabel = result.label;
-                resultLabel = resultLabel.replace(',', '-');
-                System.debug('result: ' + resultId + ' ' + resultLabel);
-                if(resultId != null && resultLabel != null && searchResults != null) {
-                    searchResults.add(new SelectOption(resultId, resultLabel));
-                }else{
-                    System.debug('Result Id null: ' + resultId);
-                    System.debug('Result Label null: ' + resultLabel);
-                }     
-            }
+        }
+        
+        for(SearchResult result : listOfResults) {
+            String resultId = result.id;
+            String resultLabel = result.label;
+            resultLabel = resultLabel.replace(',', '-');
+            System.debug('result: ' + resultId + ' ' + resultLabel);
+            if(resultId != null && resultLabel != null && searchResults != null) {
+                searchResults.add(new SelectOption(resultId, resultLabel));
+            }else{
+                System.debug('Result Id null: ' + resultId);
+                System.debug('Result Label null: ' + resultLabel);
+            }     
         }
     }
 
@@ -134,7 +103,6 @@ public class SymptomCheckerController {
 
     public String processPhrase(String input) {
         String processedString = input.replace(' ', '_');
-        System.debug('Processed String: ' + processedString);
         return processedString;
     }
 
@@ -150,60 +118,141 @@ public class SymptomCheckerController {
     }
 
     public PageReference diagnose() {
-        
-        DiagnosisRequest dr = new DiagnosisRequest();
         dr.sex = 'male';
         dr.age = (Integer) contact.Age__c;
-        for(String test : symptomMap.keySet()) {
-            Evidence newEvidence = new Evidence();
-            newEvidence.id = test;
-            newEvidence.initial = true;
-            System.debug(newEvidence);
-            System.debug(dr.evidence);
-            dr.evidence.add(newEvidence);
+        System.debug('Firing diagnose');
+        
+        if(dr.evidence.size() == 0) {
+            for(String test : symptomMap.keySet()) {
+                Evidence newEvidence = new Evidence();
+                newEvidence.id = test;  
+                newEvidence.initial = true;
+                dr.evidence.add(newEvidence);
+                System.debug('evidence list size after update: ' + dr.evidence.size());
+            }
+        }else if(dr.evidence.size() > 0) {
+            userChoices.clear();
+            if(q.question.type == 'group_single'){
+                Evidence newEvidence = new Evidence();
+                newEvidence.id = answer;
+                newEvidence.choice_id = 'present';
+                newEvidence.initial = false;
+                dr.evidence.add(newEvidence);
+            }else if (q.question.type == 'single') {
+                Evidence newEvidence = new Evidence();
+                symptomId = q.question.items[0].id;
+                newEvidence.id = symptomId;
+                newEvidence.choice_id = answer;
+                newEvidence.initial = false;
+                dr.evidence.add(newEvidence);
+            }else if (q.question.type == 'group_multiple') {
+                for(String answer : answers){
+                    Evidence newEvidence = new Evidence();
+                    newEvidence.id = answer;
+                    newEvidence.choice_id = 'present';
+                    newEvidence.initial=false;
+                    dr.evidence.add(newEvidence);
+                }
+            }
         }
 
-        Http http = new Http();
-        url = 'https://api.infermedica.com/v2/diagnosis';
-        String requestBody = JSON.serialize(dr);
-        HttpRequest req = new HttpRequest();
-        req.setEndpoint(url);
-        req.setMethod('POST');
-        req.setHeader('Content-Type', 'application/json');
-        req.setHeader('App-Id', '8af08433');    
-        req.setHeader('App-Key', 'e30db1e14f9c0b84858fac698c2eeef6');
-        System.debug('body: ' + requestBody);
-        req.setBody(requestBody);
-        HttpResponse response = Http.send(req);
-        System.debug('response: ' + response.getBody());
-        testJson = response.getBody();
+        HttpResponse response = callToApi('diagnosis');
+        q = (QuestionResponse) JSON.deserialize(response.getBody(), QuestionResponse.class);
+        return checkShouldStop();
+    }
 
-        if(response.getBody().contains('question')) {
-            System.debug('This worked.');
-            q = (QuestionResponse) JSON.deserialize(response.getBody(), QuestionResponse.class);
-            //TODO: MAP THE CHOICES AND QUESTION
-            for(Item item : q.question.items) {
-                userChoices.add(new SelectOption(item.id, item.name));
+    public PageReference checkShouldStop() {
+
+        if (q.should_stop == true) {
+            for(Condition c : q.conditions) {
+                if (c.probability > 0.50){
+                    HttpResponse conditionResponse = callToApi('condition', c.id);
+                    Condition conditionDetails = (Condition) JSON.deserialize(conditionResponse.getBody(), Condition.class);
+                    conditionDetails.probability = (c.probability * 100);
+                    likelyConditions.add(conditionDetails);
+                }
             }
-            System.debug('Choices: ' + userChoices);
-            return Page.FollowUpQuestion;
+            return Page.ConditionsPage;
         }else {
+            populateChoices();
             return Page.FollowUpQuestion;
         }
     }
 
-    public void answerQuestion() {
-        System.debug('answer: ' + answer);
+    public void showConditions() {
 
+    }
+    public void populateChoices() {
+        if(q.question.type == 'single') {
+            symptomId = q.question.items[0].id;
+            for(Choice choice : q.question.items[0].choices) {
+                userChoices.add(new SelectOption(choice.id, choice.label));
+            }
+            
+        }else if (q.question.type == 'group_single' || q.question.type == 'group_multiple') {
+            for(Item item : q.question.items) {
+                userChoices.add(new SelectOption(item.id, item.name));
+            }
+        }
+    }
+
+    public HttpResponse callToApi(String requestType) {
+        
+        Http httpClass = new Http();
+        HttpRequest req = new HttpRequest();
+        
+        req.setHeader('Content-Type', 'application/json');
+        req.setHeader('App-Id', '8af08433');    
+        req.setHeader('App-Key', 'e30db1e14f9c0b84858fac698c2eeef6');
+
+        if(requestType == 'diagnosis') {
+            url = 'https://api.infermedica.com/v2/diagnosis';
+            req.setMethod('POST');
+            req.setBody(JSON.serialize(dr));
+        }else if(requestType == 'search') {
+            symptomInput = processPhrase(symptomInput);
+            req.setMethod('GET');
+            url = 'https://api.infermedica.com/v2/search?phrase=' + symptomInput + 
+                    '&sex=' + contact.Gender__c + '&type=symptom';
+        }
+        req.setEndpoint(url);
+        HttpResponse response = httpClass.send(req);
+        return response;
+    }
+
+    public HttpResponse callToApi(String requestType, String id) {
+        
+        Http httpClass = new Http();
+        HttpRequest req = new HttpRequest();
+        
+        req.setHeader('Content-Type', 'application/json');
+        req.setHeader('App-Id', '8af08433');    
+        req.setHeader('App-Key', 'e30db1e14f9c0b84858fac698c2eeef6');
+
+        if(requestType == 'condition') {
+            url = 'https://api.infermedica.com/v2/conditions/' + id;
+            req.setMethod('GET');
+        }
+        req.setEndpoint(url);
+        HttpResponse response = httpClass.send(req);
+        return response;
+    }
+
+    public PageReference bookingPage() {
+        PageReference bookingPage = Page.BookAnAppointment;
+        System.debug('Contact Id: ' + contactId);
+        System.debug('category: ' + categoryToSend);
+        bookingPage.getParameters().put('Pat', contactId);
+        bookingpage.getParameters().put('Con', categoryToSend);
+        System.debug('going to bookingPage');
+        return bookingPage;
+    }
+
+    public void answerQuestion() {
+        diagnose();
     }
 
     public PageReference goToConditionsPage () {
         return Page.ConditionsPage;
-    }
-
-    public PageReference goToBookingPage() {
-        PageReference bookingPage = Page.BookAnAppointment;
-        bookingPage.getParameters().put('Pat', contactId);
-        return bookingPage;
     }
 }
