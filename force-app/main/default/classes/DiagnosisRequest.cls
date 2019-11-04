@@ -1,3 +1,6 @@
+/*
+    @description Wrapper class for the Diagnosis Request JSON object sent to the Infermedica API.
+ */
 public class DiagnosisRequest {
     public String sex {get; set;}
     public Integer age {get; set;}
