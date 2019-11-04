@@ -83,15 +83,15 @@
             <apex:pageBlock title="">
                 <apex:form>
                     <apex:pageBlockSection title="Follow up question" columns="1">
+                        <!--single-->
                         <apex:outputPanel rendered="{!If (q.question.type == 'single', true, false)}">
-
                             <apex:outputText style="font-weight:bold; font-size: 1.5em;" value="{!q.question.text}"/>
                             <apex:selectRadio value="{!answer}" layout="pageDirection" required="true">
                                 <apex:selectOptions value="{!answerOptions}" />
                             </apex:selectRadio>
                             <apex:commandButton value="Submit Answer" action="{!diagnose}"/>
-                            single
                         </apex:outputPanel>
+                        <!--Group single-->
                         <apex:outputPanel rendered="{!If (q.question.type == 'group_single', true, false)}">
                             <!--choose one-->
                             <apex:outputText style="font-weight:bold; font-size: 1.5em;" value="{!q.question.text}"/>
@@ -99,8 +99,8 @@
                                 <apex:selectOptions value="{!answerOptions}" />
                             </apex:selectRadio>
                             <apex:commandButton value="Submit Answer" action="{!diagnose}"/>
-                            Group single
                         </apex:outputPanel>
+                        <!--Group multiple-->
                         <apex:outputPanel rendered="{!If (q.question.type == 'group_multiple', true, false)}">
                             <!-- Choose more than one -->
                             <apex:outputText style="font-weight:bold; font-size: 1.5em;" value="{!q.question.text}"/>
@@ -108,9 +108,7 @@
                                 <apex:selectOptions value="{!answerOptions}" />
                             </apex:selectCheckboxes>
                             <apex:commandLink value="Submit Answer" action="{!diagnose}"/>
-                            Group multiple
                         </apex:outputPanel>
-                        {!testJson}
                     </apex:pageBlockSection>
                 </apex:form>
             </apex:pageBlock>
