@@ -1,8 +1,8 @@
 global with sharing class AppointmentExtender {
     //keep a reference to the standard set controller
     ApexPages.StandardSetController setController;
-    private Id doctorId;
-    private Id patientId;
+    public Id doctorId;
+    public Id patientId;
     global Appointment__c appt {get; set;}
     global List<Time> times;
     global List<List<Boolean>> Booleans;
@@ -30,17 +30,6 @@ global with sharing class AppointmentExtender {
         incrementCounter();
         return timeCreationCounter;
     }
-    /*
-    global transient List<List<Component.Apex.CommandButton>> weekButtons{
-        get {
-            if (weekButtons == null) {
-                weekButtons = new List<List<Component.Apex.CommandButton>>();
-            }
-            return weekButtons;
-        }
-        set;
-        }
-    */
     public List<List<List<Boolean>>> selectableTimes;
 
     public void setSelectableTimes(Integer week){
@@ -55,31 +44,7 @@ global with sharing class AppointmentExtender {
 
     public Component.Apex.PageBlock getWeekButtons(){
         Component.Apex.PageBlock dynWeekButtons = new Component.Apex.PageBlock();
-        // Integer i = 0;
-        // Integer j = 0;
-        // List<String> values = new List<String>{'8:00 AM - 9:00 AM',
-        // '9:00 AM - 10:00 AM',
-        // '10:00 AM - 11:00 AM',
-        // '11:00 AM - 12:00 PM',
-        // '12:00 PM - 1:00 PM',
-        // '1:00 PM - 2:00 PM',
-        // '2:00 PM - 3:00 PM',
-        // '3:00 PM - 4:00 PM',
-        // '4:00 PM - 5:00 PM',
-        // '5:00 PM - 6:00 PM'};
-        // Component.Apex.CommandButton timeButton = new Component.Apex.CommandButton();
-        // while(i<9){
-        //     while(j<7){
-        //         timeButton.value = values[i];
-        //         timeButton.expressions.action = '{!Save}';
-        //         timeButton.Id = 'DT580';
-        //         dynWeekButtons.childComponents.add(timeButton);
-        //         timeButton = new Component.Apex.CommandButton();
-        //         j++;
-        //     }
-        //     i++;
-        //     j=0;
-        // }
+        
         Component.Apex.CommandButton timeButton = new Component.Apex.CommandButton();
         timeButton.value = 'Matt';
         timeButton.expressions.action = '{!Save}';
@@ -117,8 +82,24 @@ global with sharing class AppointmentExtender {
  
 
     public AppointmentExtender(ApexPages.StandardSetController controller) {
-        doctorId = Id.valueOf(apexpages.currentpage().getparameters().get('Doc'));
-        patientId = Id.valueOf(apexpages.currentpage().getparameters().get('Pat'));
+        //no null ids!
+        try{
+            doctorId = Id.valueOf(apexpages.currentpage().getparameters().get('Doc'));
+        	patientId = Id.valueOf(apexpages.currentpage().getparameters().get('Pat'));
+        }catch(Exception e)
+        {
+            System.debug('!');
+        }finally{
+            if(doctorId==null)
+            {
+                doctorId=[SELECT Id FROM Doctor__c LIMIT 1].Id;
+            }
+            if(patientId==null)
+            {
+                patientId=[SELECT Id FROM Contact LIMIT 1].Id;
+            }
+        }
+        
         appt = new Appointment__c(Doctor__c = doctorId, Patient__c = patientId);
         times = new List<Time>{Time.newInstance(8, 0, 0, 0),
                                 Time.newInstance(9, 0, 0, 0),
@@ -146,25 +127,7 @@ global with sharing class AppointmentExtender {
         return null;
     }
 
-    /*
-    @RemoteAction
-    global static List<<List> boolean> getValidDates(Integer addWeeks){
-        List<Time> times = new List<Time>{Time.newInstance(8, 0, 0, 0),
-                                Time.newInstance(9, 0, 0, 0),
-                                Time.newInstance(10, 0, 0, 0),
-                                Time.newInstance(11, 0, 0, 0),
-                                Time.newInstance(12, 0, 0, 0),
-                                Time.newInstance(13, 0, 0, 0),
-                                Time.newInstance(14, 0, 0, 0),
-                                Time.newInstance(15, 0, 0, 0),
-                                Time.newInstance(16, 0, 0, 0),
-                                Time.newInstance(17, 0, 0, 0),
-                                Time.newInstance(18, 0, 0, 0)};
-        dateTime beginDate = DateTime.newInstance();
-        dateTime endDate = beginDate.clone().addDays(7*addWeeks);
-
-    }
-    */
+    
     @RemoteAction
     global static List<List<Boolean>> getValidDates(){
         return new List<List<Boolean>>{ new List<Boolean>{False, True, False, True, False, True, False},

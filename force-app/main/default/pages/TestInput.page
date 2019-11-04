@@ -1,6 +1,6 @@
-<apex:page>
+<apex:page >
     <apex:pageBlock title="Test input">
-        <apex:pageBlockSection>
+        <apex:pageBlockSection >
             <apex:outputLink value="https://c.na113.visual.force.com/apex/SymptomChecker">
                 <apex:param name="Id" value="0033j00002NLgFlAAL" />
                 Check SymptomChecker

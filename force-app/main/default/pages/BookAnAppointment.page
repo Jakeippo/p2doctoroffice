@@ -1,105 +1,260 @@
 <apex:page standardController="Appointment__c" recordSetVar="appointments"
-extensions="AppointmentExtender">
-<script type="text/javascript">
-    //var validTable = Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.AppointmentExtender.getValidDates}');
-    /*
-    console.log('hi');
-    Visualforce.remoting.Manager.invokeAction(
-    '{!$RemoteAction.AppointmentExtender.getValidDates}'
-    function (result, event) {
-        console.log(event.status);
-        console.log(JSON.stringify(result);
-        if (event.status) {
-
-        }
-    },
-    {
-        // configuration
-    }));   
-    */
-    function getTruth() {
-
-    Visualforce.remoting.Manager.invokeAction(
-        '{!$RemoteAction.AppointmentExtender.getValidDates}',
-        function(result, event){
-            console.log(event.status);
-            console.log(JSON.stringify(result));
-            console.log(JSON.stringify(result[0]));
-            console.log(JSON.stringify(result[0][0]));
-            if (event.status) {
-                //document.getElementById('acctId').innerHTML = result.Id
-               // document.getElementById('acctName').innerHTML = result.Name;
-            } else if (event.type === 'exception') {
-                //document.getElementById("responseErrors").innerHTML = event.message;
-            } else {
-                //document.getElementById("responseErrors").innerHTML = event.message;
-            }
-        }, 
-        {escape: true}
-    );
-    }
-    function checkValidEntry(column, row){
-        let buttonC = 'DT'+column.toString()+row.toString();
-        let shouldEnable = validTable[parseInt(row)][parseInt(column)];
-        console.log(buttonC);
-        console.log(shouldEnable); 
-        document.getElementById(buttonC).attr("disabled", shouldEnable);
+extensions="AppointmentExtender" id="apppointment">
+    <script type="text/javascript">
+        var validTable = [];
+        var weekDates = [];
+        var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        var currentWeek = 0;
+        var selectedYear = 0;
+        var selectedMonth = 0;
+        var selectedDay = 0;
+        var selectedTime = "";
         
-    }
-
-    function RefreshAll(){
-        var i = 0;
-        var j = 0;
-        while(i<10){
-            while(j<8){
-                checkValidEntry(j,i);
-                j += 1;
-            }
-            i+=1;
-            j=0;
+        function getTimes(){
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.AppointmentExtender.getValidDates}',
+            currentWeek,'{!doctorId}',
+            function(result, event){
+                if (event.status) {
+                validTable[currentWeek] = result;
+                setTimes();
+                } else if (event.type === 'exception') {
+                } else {
+                }
+            }, 
+            {escape: true});
         }
-    }
-    getTruth();
-    //RefreshAll();
-    var counter1 = 0;
-    function showCounter(){
-        counter1 += 1
-        console.log(counter1);
-    }
-</script>
+        
+        function getDisplayDates() {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.AppointmentExtender.getWeekDates}', 
+            currentWeek,
+            function(result, event){
+                if (event.status) {
+                    weekDates[currentWeek] = result;
+                setWeekdays();
+                } else if (event.type === 'exception') {
+                } else {
+                }
+            }, 
+            {escape: true});
+        }
+        
+        function makeAppointment() {
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.AppointmentExtender.makeAppointment}', 
+            selectedYear, selectedMonth, selectedDay, selectedTime, '{!doctorId}', '{!patientId}',
+            function(result, event){
+                if (event.status) {
+                } else if (event.type === 'exception') {
+                } 
+                else {
+                }
+            }, 
+            {escape: true});
+        }
 
-<h1>Book An Appointment</h1>
-    <apex:pageBlock>
-        <apex:pageBlockTable value = "{!displayedAppointments}" var = "a">
-            <apex:column value = "{!a.Doctor__c}" />
-            <apex:column value = "{!a.Doctor__r.Name}" />
-            <apex:column value = "{!a.Date__c}" />
-        </apex:pageBlockTable>
-        <apex:form>
-            Select a date/time
-            <apex:inputField value="{!appt.Date__c}"/>
-            <apex:commandButton action="{!save}" value="SAVE"/>
-        </apex:form>
-        <br></br> 
-        <apex:form>
-            <apex:dynamicComponent componentValue="{!testButton}"/>
+        function checkExistingAppointment(column, row){
+            let buttonC = 'apppointment:week:time:'+column.toString()+':day:'+row.toString()+':select';
+            let shouldEnable = validTable[currentWeek][parseInt(row)][parseInt(column)];
+            document.getElementById(buttonC).disabled=!shouldEnable;
+            if(shouldEnable){
+                document.getElementById(buttonC).style.background = 'white';
+            }else{
+                document.getElementById(buttonC).style.background = 'grey';
+            }
+        }
 
-        </apex:form>
-           
-    </apex:pageBlock>
+        function setTimes(){
+            var i = 0;
+            var j = 0;
+            while(i<10){
+                while(j<7){
+                    checkExistingAppointment(i,j);
+                    j += 1;
+                }
+                i+=1;
+                j=0;
+            }
+        }
 
-    <!-- <apex:form>
-        <apex:dynamicComponent componentValue="{!weekButtons}"/>
-    </apex:form>  -->
+        function setWeekdays(){
+            var dayMonth = "";
+            var dayDate = "";
+            var dayYear = "";
+            var step = 0;
+            while(step<7){
+                dayMonth = "displaydates:"+step.toString()+":month";
+                dayDate = "displaydates:"+step.toString()+":day";
+                dayYear = "displaydates:"+step.toString()+":year";
+                document.getElementById(dayMonth).innerText = months[parseInt(weekDates[currentWeek][step][0])-1];
+                document.getElementById(dayDate).innerText = weekDates[currentWeek][step][1];
+                document.getElementById(dayYear).innerText = weekDates[currentWeek][step][2];
+                step+=1;
+            }
+        }
 
-    <apex:form id="week">
-        <apex:repeat value="{!values}" var="a" id="time">
-                <apex:repeat value="{!myS}" var="b" id="day">
-                    <!-- <apex:dynamicComponent componentValue="{!testButton}" /> -->
-                    <!-- <apex:outputText value="{!a} "/> -->
-                    <apex:commandButton action="{!save}" value="{!a}" id="select"/>
-                </apex:repeat>
-                <br></br>
-        </apex:repeat>
-    </apex:form>
+        function prevWeek(){
+            currentWeek--;
+            if(currentWeek==0){
+                document.getElementById("apppointment:week:previousWeek").disabled=true;
+            }
+            setWeekData();
+        }
+
+        function nextWeek(){
+            currentWeek++;
+            document.getElementById("apppointment:week:previousWeek").disabled=false;
+            if(weekDates[currentWeek]){
+                setWeekData();
+            }else{
+                getWeekData();
+            }
+        }
+        
+        function getWeekData(){
+            getDisplayDates();
+            getTimes();
+        }
+        function setWeekData(){
+            setWeekdays();
+            setTimes();
+        }
+
+        function selectDate(day, time){
+            selectedYear = parseInt(weekDates[currentWeek][day][2]);
+            selectedMonth = parseInt(weekDates[currentWeek][day][0])+1;
+            selectedDay = parseInt(weekDates[currentWeek][day][1]);
+            selectedTime = time;
+            updateSelection();
+        }
+
+        function updateSelection(){
+            document.getElementById("selectedDate").innerText = (selectedMonth-1) + "/" + selectedDay + "/" + selectedYear;
+            document.getElementById("selectedTime").innerText = selectedTime;
+        }
+        
+        getWeekData();
+    </script>
+
+    <apex:stylesheet value="{!URLFOR($Resource.medstyle)}"  />
+    
+
+	
+    <body style="background-image:  url('{!$Resource.back}');">
+        
+       <apex:messages />
+            
+            
+            <!-- Header -->
+            <div class="header2">
+                Appointment Booker
+            </div>
+            
+            
+            <!-- scheduled appointments table -->
+            <apex:pageBlock title="My Scheduled Appointments">
+                <apex:pageBlockTable value="{!displayedAppointments}" var="a">
+                    <apex:column value="{!a.Doctor__c}" />
+                    <apex:column value="{!a.Doctor__r.Name}" />
+                    <apex:column value="{!a.Date__c}" />
+                </apex:pageBlockTable>
+                
+            </apex:pageBlock>
+            
+            
+            <!--Doctor chooser -->
+            <apex:form id="doctor" rendered="{!promptDoctor}"> 
+                <center>
+                    <apex:selectList value="{!doctorChoice}" multiselect="false">
+                            <apex:selectOptions value="{!doctorList}"/>
+                    </apex:selectList>
+                    <p class="description">
+                        Please choose a doctor to schedule an appointment with                    
+                    </p>
+                    <apex:commandButton value="Choose Doctor" action="{!doctorButton}" styleClass="shadow"/>
+                
+                </center>
+                
+                
+            </apex:form>
+    
+        
+            <p></p>
+            
+            <apex:form id="week" rendered="{!(!promptDoctor)}"> 
+                
+                <apex:outputText value="Current Time is: {!SystemTime}"/><p>
+                
+                </p>
+                <apex:outputText value=" Viewing the schedule of Doctor: {!DoctorName}"/>
+        
+                <p></p>
+                
+            <center>
+            <div class="dates">
+                
+                
+			
+            <table id="displaydates">
+                <tr>
+                    <td>Sunday</td>
+                    <td>Monday</td>
+                    <td>Tuesday</td>
+                    <td>Wednesday</td>
+                    <td>Thusday</td>
+                    <td>Friday</td>
+                    <td>Saturday</td>
+                </tr>
+                <tr>
+                    <td><label id="displaydates:0:month">defaultuary</label> <label id="displaydates:0:day">0</label></td>
+                    <td><label id="displaydates:1:month">defaultuary</label> <label id="displaydates:1:day">1</label></td>
+                    <td><label id="displaydates:2:month">defaultuary</label> <label id="displaydates:2:day">2</label></td>
+                    <td><label id="displaydates:3:month">defaultuary</label> <label id="displaydates:3:day">3</label></td>
+                    <td><label id="displaydates:4:month">defaultuary</label> <label id="displaydates:4:day">4</label></td>
+                    <td><label id="displaydates:5:month">defaultuary</label> <label id="displaydates:5:day">5</label></td>
+                    <td><label id="displaydates:6:month">defaultuary</label> <label id="displaydates:6:day">7</label></td>
+                </tr>
+                <tr>
+                    <td id="displaydates:0:year">0000</td>
+                    <td id="displaydates:1:year">0000</td>
+                    <td id="displaydates:2:year">0000</td>
+                    <td id="displaydates:3:year">0000</td>
+                    <td id="displaydates:4:year">0000</td>
+                    <td id="displaydates:5:year">0000</td>
+                    <td id="displaydates:6:year">0000</td>
+                </tr>
+            </table>
+			</div>
+            <apex:repeat value="{!values}" var="a" id="time">
+                    <apex:repeat value="{!myS}" var="b" id="day">
+                        <apex:commandButton onClick="selectDate('{!b}','{!a}');return false;" value="{!a}" id="select" styleClass="datebutton"/>
+                    </apex:repeat>
+                <p></p>
+            </apex:repeat>
+            
+             
+                
+                <apex:commandButton onClick="prevWeek();return false;" value="Previous Week" id="previousWeek" />
+            	<apex:commandButton onClick="nextWeek();return false;" value="Next Week" id="nextWeek" />
+            </center>
+            
+            <p></p>
+                
+                
+                <center class="bookinput">
+                    <p>
+                       Book an appointment with  <apex:outputText value="{!DoctorName}"/>
+                	</p>
+                    <p>
+                	 on <label class="bookinput" id="selectedDate"></label> <label class="bookinput" id="selectedTime"></label> ?
+                	</p>
+                    
+            			<apex:commandButton onClick=" makeAppointment();return false;" action="{!goToHome}" value="Schedule Appointment" id="createAppointment"/>
+               </center>
+
+            
+            </apex:form>
+        
+    </body>
 </apex:page>
