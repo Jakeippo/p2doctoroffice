@@ -87,7 +87,7 @@
 
                             <apex:outputText style="font-weight:bold; font-size: 1.5em;" value="{!q.question.text}"/>
                             <apex:selectRadio value="{!answer}" layout="pageDirection" required="true">
-                                <apex:selectOptions value="{!userChoices}" />
+                                <apex:selectOptions value="{!answerOptions}" />
                             </apex:selectRadio>
                             <apex:commandButton value="Submit Answer" action="{!diagnose}"/>
                             single
@@ -96,7 +96,7 @@
                             <!--choose one-->
                             <apex:outputText style="font-weight:bold; font-size: 1.5em;" value="{!q.question.text}"/>
                             <apex:selectRadio value="{!answer}" layout="pageDirection" required="true">
-                                <apex:selectOptions value="{!userChoices}" />
+                                <apex:selectOptions value="{!answerOptions}" />
                             </apex:selectRadio>
                             <apex:commandButton value="Submit Answer" action="{!diagnose}"/>
                             Group single
@@ -105,7 +105,7 @@
                             <!-- Choose more than one -->
                             <apex:outputText style="font-weight:bold; font-size: 1.5em;" value="{!q.question.text}"/>
                             <apex:selectCheckboxes value="{!answers}" layout="pageDirection" required="true">
-                                <apex:selectOptions value="{!userChoices}" />
+                                <apex:selectOptions value="{!answerOptions}" />
                             </apex:selectCheckboxes>
                             <apex:commandLink value="Submit Answer" action="{!diagnose}"/>
                             Group multiple
